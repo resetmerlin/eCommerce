@@ -1,0 +1,7 @@
+Actually, before we do that, this one dependency that we need to install, which is Axios and Axios
+
+is an HTTP library.
+
+We use it to make requests to our back end, although you could use the fetch API if you like, I just
+
+find axios easier and more powerful.
