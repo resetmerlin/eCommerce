@@ -1,0 +1,3 @@
+What is a schema in MongoDB?
+What is a Schema? A schema is a JSON object that defines the the 
+structure and contents of your data.

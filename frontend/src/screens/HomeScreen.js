@@ -11,6 +11,7 @@ import Product from "../components/Product";
 // Now, when it comes to state, you have component level and you have global or application level state.
 
 // Now, products ultimately is going to be global state when we get into Redox.
+import axios from "axios";
 const HomeScreen = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -28,7 +29,10 @@ const HomeScreen = () => {
 
       setProducts(data);
     };
-  });
+
+    fetchProducts();
+    // And what I mean by that is anything that you want to fire use effect off when it changes.
+  }, []);
   return (
     <div>
       <h1>Latest Products</h1>

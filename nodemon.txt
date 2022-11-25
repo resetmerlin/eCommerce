@@ -1,0 +1,27 @@
+Now, Nodemon is a tool that we can use to constantly watch our server so that we don't have to keep
+
+resetting it because we don't use something like Nodemon.
+
+I mean, there's other things you can use as well.
+
+But if we don't use anything, then every time we make a change to, you know, server, we have
+
+to keep restarting the server.
+
+So to use node one, we're going to go into our packages and create a script right here.
+
+So we have our START script, which runs the back end server file.
+
+Now I'm going to add another script called Server.
+
+
+
+However, we don't want to run npm start from the route.
+
+We need to run it from the front end folder.
+
+So the way we can do that is we can add a dash dash prefix and then the name of the folder front end.
+
+So essentially it's going to go into the front end folder first and then run npm start.
+
+1. ex:     "client": "npm start --prefix fronted"

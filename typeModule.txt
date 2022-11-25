@@ -1,0 +1,10 @@
+We can use import and export on both the front end and the back end.
+
+Just make sure you add that tight module to your package JSON and make sure you add Jast when you bring
+
+in actual JavaScript files.
+
+
+we are just gonna change it like this:
+
+export default products;

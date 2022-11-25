@@ -1,0 +1,23 @@
+useEffect is a hook runs a function every render of the components
+now remember, the component renders initially when it first loads 
+and it renders all of the thing we wrote at the dom, 
+and It also happens when the state changes.
+It re-renders the dom so we can update that state in browser
+
+
+
+1.For useState()
+First, we have the functional component which did not supported state, in other words, a functional component is a stateless component.
+..
+Now, with Hooks, we have the functional component but stateful. It is achieved by using useState.
+
+2.For useEffect()
+First, with stateless functional component, we didn't have component lifecycle hooks. In other words, whenever you want to use component lifecycle hooks, you should consider using class component.
+
+Now, we are able to use component lifecycle hooks without using class component. It is achieved by using useEffect. In other words, now whenever we want to use component lifecycle hooks, we already have two options either using class component or using Hooks with useEffect.
+
+3.UPDATE
+
+what’s the exact difference between useState and useEffect?
+
+In simple words, useState allows our functional components which used to be stateless become stateful. And useEffect allows our functional components leverage the component lifecycle hooks which were, in the past, only supported for class components.

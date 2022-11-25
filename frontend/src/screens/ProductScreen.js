@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Row,
@@ -10,12 +10,23 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
-import products from "../products";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
-const ProductScreen = () => {
+const ProductScreen = ({ match }) => {
+  const [product, setProduct] = useState([]);
   const { id } = useParams();
-  const product = products.find((p) => p._id === `${id}`);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${id}`);
+
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, [id]);
+  // const product = products.find((p) => p._id === `${id}`);
   console.log(product);
   //which is another high order array method.
   // let's say for each product, let's say, where the product underscore
@@ -23,6 +34,10 @@ const ProductScreen = () => {
   //   리액트 라우터 라이브러리에서 제공하는 함수이고, Route path 와 일치하는 현재 URL에서 동적 매개변수의 키/값 쌍의 개체를 반환한다.
 
   // 쇼핑몰 웹사이트를 예를들면 메인 페이지에서 여러개의 값을 렌더링하고, 클릭한것만 렌더링 시키고자 할때 하나하나 다 onclick 이벤트를 사용하기가 번거로운데, useParams 로 해결 가능하다.
+
+  //useEffect의 두번째 인자인 배열에는 useEffect의 첫번째 인자로 사용되는 state or prop를
+  //넣어줘야 합니당ㅇ 그래야 useEffect가 해당 인자들이 업데이트 될 때마다 다시 동작하기 때문입니다!
+
   return (
     <div>
       <Link className="btn btn-light my-3" to="/">
