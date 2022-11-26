@@ -1,0 +1,8 @@
+The throw statement allows you to create an exception 
+or a custom error. The exception can be like a Javascript string,
+ a number, a boolean, or an object. So, If you use this statement 
+ together with the try…catch statement. It allows you to control 
+ the flow of the program and generate accurate error messages. 
+ For example: throw “too small” (throw a text),
+  throw 500 (throw a number), etc.
+

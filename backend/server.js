@@ -1,27 +1,31 @@
 import express from "express";
 import dotenv from "dotenv";
-import products from "./data/products.js";
 import colors from "colors";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
+import productRoutes from "./routes/productRoutes.js";
 const app = express();
+
+// app.use((req, res, next) => {
+//   console.log("helloo");
+//   next();
+// });
+// So app.use is where you want to pass your middleware in and this can be a function that takes in
+// you always have to call 'next' to move to the next piece of middleware unless
+
+// you're just, you know, stopping the whole request response cycle.
 
 dotenv.config();
 
 connectDB();
+
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  //req.params.id === /:id
-  res.json(product);
-});
-
+app.use(`/api/products`, productRoutes);
+app.use(notFound);
+app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 app.listen(
   PORT,

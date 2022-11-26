@@ -1,0 +1,2 @@
+Middleware is it's basically a function that has access 
+to the requests response cycle.
