@@ -1,0 +1,3 @@
+Reducers must be pure, side-effect free. synchronous functions 
+
+Input(Old state + Action) => Output(New State)

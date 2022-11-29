@@ -1,0 +1,24 @@
+Redux is for application or global state.
+So the way that state is changed is through reducers or reduce or functions.
+
+And it basically just functions that except actions.
+
+And they're responsible for manipulating and passing the state down to components.
+
+Now, actions are just objects that represent the intention to change a piece of state.
+
+Redux쓰는 이유
+1. props 문법 귀찮을때 씁니다
+왜냐하면 application이 큰 경우에는 props가 많기 때문에 너무 많다.
+그럴때 redux를 쓰는거다. state 보관 가능!!
+
+2. state 변경 관리할때 씁니다
+
+보통 state를 사용하기 위해서 하위 레이어 들에게 props를 전달해 주는데...
+redux 사용하면 직접 꺼내 쓸 수 있음ㅁㅁㅁ
+
+예로 들어서 컴포넌트가 엄청 많을때 이 state를 변경하고 싶은데..
+만약 버그가 생겼을때 컴포넌트를 다 뒤져봐야 함.... 
+하지만 redux 사용시 이 버그 수정방법을 미리 제시함. 그리고 컴포넌트들이 이 state를 사용하고 싶을때 요청만 하면 됨
+컴포넌트에서 state 수정요청을 하려면 dispatch 사용하면 됨 ㅇㅇㅇ
+

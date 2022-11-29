@@ -26,6 +26,7 @@ router.get(
 
     const products = await Product.find({});
     // Whenever we use a mongoose method, it returns a promise
+
     res.json(products);
   })
 );

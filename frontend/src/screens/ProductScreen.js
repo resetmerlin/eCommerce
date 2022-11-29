@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -8,26 +9,39 @@ import {
   Card,
   Button,
   ListGroupItem,
+  Form,
 } from "react-bootstrap";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
 import Rating from "../components/Rating";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-
-const ProductScreen = ({ match }) => {
-  const [product, setProduct] = useState([]);
+// import axios from "axios";
+import { listProductDetails } from "../actions/productAction";
+const ProductScreen = ({ match, history }) => {
+  const [qty, setQty] = useState(0);
+  /*const [product, setProduct] = useState([]);*/
+  const dispatch = useDispatch();
   const { id } = useParams();
+  const productDetails = useSelector((state) => state.productDetails);
+
+  const { loading, error, product } = productDetails;
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/api/products/${id}`);
+    // const fetchProduct = async () => {
+    //   const { data } = await axios.get(`/api/products/${id}`);
+    //   setProduct(data);
+    // };
+    // fetchProduct();
 
-      setProduct(data);
-    };
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
+  const addToCartHandler = () => {
+    history.push(`/cart/${id}?qty=${qty}`);
+  };
 
-    fetchProduct();
-  }, [id]);
   // const product = products.find((p) => p._id === `${id}`);
-  console.log(product);
+  // console.log(product);
+
   //which is another high order array method.
   // let's say for each product, let's say, where the product underscore
   //I.D. is equal to the ID that's in the URL => localjost3000/product/1
@@ -43,58 +57,93 @@ const ProductScreen = ({ match }) => {
       <Link className="btn btn-light my-3" to="/">
         GO back
       </Link>
-      <Row>
-        <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid></Image>
-        </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h3>${product.name}</h3>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Rating
-                value={product.rating}
-                text={`${product.numReviews} reviews`}
-              ></Rating>
-            </ListGroup.Item>
-            <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-            <ListGroup.Item>Description: {product.description}</ListGroup.Item>
-          </ListGroup>
-        </Col>
-        <Col md={3}>
-          <Card>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <Row>
+          <Col md={6}>
+            <Image src={product.image} alt={product.name} fluid></Image>
+          </Col>
+          <Col md={3}>
             <ListGroup variant="flush">
               <ListGroup.Item>
-                <Row>
-                  <Col>Price:</Col>
-                  <Col>
-                    <strong>${product.price}</strong>
-                  </Col>
-                </Row>
+                <h3>${product.name}</h3>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Row>
-                  <Col>Status:</Col>
-                  <Col>
-                    {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
-                  </Col>
-                </Row>
+                <Rating
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
+                ></Rating>
               </ListGroup.Item>
+              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
               <ListGroup.Item>
-                <Button
-                  style={{ width: "100%" }}
-                  className="btn-block"
-                  type="button"
-                  disabled={product.countInStock === 0}
-                >
-                  Add To Cart
-                </Button>
+                Description: {product.description}
               </ListGroup.Item>
             </ListGroup>
-          </Card>
-        </Col>
-      </Row>
+          </Col>
+          <Col md={3}>
+            <Card>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Price:</Col>
+                    <Col>
+                      <strong>${product.price}</strong>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Status:</Col>
+                    <Col>
+                      {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+
+                {product.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        <Form.Control
+                          as="select"
+                          //inside this we need to have our quantity options
+                          value={qty}
+                          onChange={(e) => setQty(e.target.value)}
+                        >
+                          {[...Array(product.countInStock).keys()].map((x) => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                            // And what this is going to do is let's say the count
+                            // in stock is five, I want to end up with an array
+                            // that's like zero one, two, three, four with five
+                            // values.
+                          ))}
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+                <ListGroup.Item>
+                  <Button
+                    onClick={addToCartHandler}
+                    style={{ width: "100%" }}
+                    className="btn-block"
+                    type="button"
+                    disabled={product.countInStock === 0}
+                  >
+                    Add To Cart
+                  </Button>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };
