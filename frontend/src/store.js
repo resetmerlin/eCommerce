@@ -3,6 +3,13 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { productListReducer } from "./reducers/productReducers";
 import { productDetailsReducer } from "./reducers/productReducers";
+import cartReducer from "./reducers/cartReducers";
+
+const cartItemsFromStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
+// And we want to fetch it from a local storage.
+// if i use parse ,it gets stored as a string.
 const reducer = combineReducers({
   productList: productListReducer,
   // Now, this is really important because this is this is what's going to show in as you as this piece
@@ -11,10 +18,13 @@ const reducer = combineReducers({
 
   // So it'll be the product list part of the state.
   productDetails: productDetailsReducer,
+  cart: cartReducer,
 });
 
 const middleware = [thunk];
-const initialState = {};
+const initialState = {
+  cart: { cartItems: cartItemsFromStorage },
+};
 const store = createStore(
   reducer,
   initialState,

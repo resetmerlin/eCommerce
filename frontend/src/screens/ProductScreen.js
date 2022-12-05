@@ -15,12 +15,16 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import Rating from "../components/Rating";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router";
+
 // import axios from "axios";
 import { listProductDetails } from "../actions/productAction";
 const ProductScreen = ({ match, history }) => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
   /*const [product, setProduct] = useState([]);*/
   const dispatch = useDispatch();
+  let navigate = useNavigate();
+
   const { id } = useParams();
   const productDetails = useSelector((state) => state.productDetails);
 
@@ -36,7 +40,7 @@ const ProductScreen = ({ match, history }) => {
     dispatch(listProductDetails(id));
   }, [dispatch, id]);
   const addToCartHandler = () => {
-    history.push(`/cart/${id}?qty=${qty}`);
+    navigate(`/cart/${id}?qty=${qty}`);
   };
 
   // const product = products.find((p) => p._id === `${id}`);
