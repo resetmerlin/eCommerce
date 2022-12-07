@@ -1,7 +1,12 @@
 import express from "express";
-import asyncHandler from "express-async-handler";
+// import asyncHandler from "express-async-handler";
+
 const router = express.Router();
-import Product from "../models/productModel.js";
+// import Product from "../models/productModel.js";
+import {
+  getProductById,
+  getProducts,
+} from "../controllers/productController.js";
 
 // add up here just a header for each wrote that says what it is and the access level
 // description and this is going to fetch all products.
@@ -18,41 +23,43 @@ import Product from "../models/productModel.js";
 
 // This is a public road, meaning anyone can hit it.
 
-router.get(
-  "/",
-  asyncHandler(async (req, res) => {
-    //that should be able to get the get all products.
-    //we installed asyncHandler
+router.route("/").get(getProducts);
+// router.get(
+//   "/",
+//   asyncHandler(async (req, res) => {
+//     //that should be able to get the get all products.
+//     //we installed asyncHandler
 
-    const products = await Product.find({});
-    // Whenever we use a mongoose method, it returns a promise
+//     const products = await Product.find({});
+//     // Whenever we use a mongoose method, it returns a promise
 
-    res.json(products);
-  })
-);
+//     res.json(products);
+//   })
+// );
+router.route("/:id").get(getProductById);
 
 // @desc Fetch single product
 // @route GET /api/products/:id
 // @access  Public
-router.get(
-  "/:id",
-  asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
-    if (product) {
-      //req.params.id === /:id
-      res.json(product);
-    } else {
-      res.status(404);
-      throw new Error("Product not found");
-      //And that message will just say product, product not found.
-      //   However, now that we have this custom error handler, we can simply set the status first.
+// router.get(
+//   "/:id",
+//   asyncHandler(async (req, res) => {
+//     const product = await Product.findById(req.params.id);
+//     if (product) {
+//       //req.params.id === /:id
+//       res.json(product);
+//     } else {
+//       res.status(404);
+//       throw new Error("Product not found");
+//       //And that message will just say product, product not found.
+//       //   However, now that we have this custom error handler, we can simply set the status first.
 
-      //   So just set it to whatever we want and then we can throw a new error and pass in a message.
-      //And now if we go back, if you recall, what has to happen for this to fire off is it has to be an actual
+//       //   So just set it to whatever we want and then we can throw a new error and pass in a message.
+//       //And now if we go back, if you recall, what has to happen for this to fire off is it has to be an actual
 
-      // formatted object ID, but just not one that's in the database.
-    }
-  })
-);
+//       // formatted object ID, but just not one that's in the database.
+//     }
+//   })
+// );
 
 export default router;

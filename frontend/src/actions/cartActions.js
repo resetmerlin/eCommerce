@@ -4,7 +4,7 @@ import axios from "axios";
 // request to API products and then the I.D. to get the the the fields to get the data for that particular
 // product to add to our cart
 
-import { CART_ADD_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   // Now we're also going to be saving our entire cart to local storage here.
 
@@ -26,4 +26,11 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
   //   Now we save it to local storage here, but where do we actually get it to fill the state?
 
   //   So we do that in our store.
+};
+export const removeFromCart = (id) => (dispatch, getState) => {
+  dispatch({
+    type: CART_REMOVE_ITEM,
+    payload: id,
+  });
+  localStorage.setItem(`cartItems`, JSON.stringify(getState().cart.cartItems));
 };

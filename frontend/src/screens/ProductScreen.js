@@ -5,10 +5,9 @@ import {
   Row,
   Col,
   Image,
-  ListGroup,
   Card,
   Button,
-  ListGroupItem,
+  ListGroup,
   Form,
 } from "react-bootstrap";
 import Message from "../components/Message";
@@ -16,10 +15,11 @@ import Loader from "../components/Loader";
 import Rating from "../components/Rating";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { addToCart } from "../actions/cartActions";
 
 // import axios from "axios";
 import { listProductDetails } from "../actions/productAction";
-const ProductScreen = ({ match, history }) => {
+const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
   /*const [product, setProduct] = useState([]);*/
   const dispatch = useDispatch();
@@ -40,9 +40,9 @@ const ProductScreen = ({ match, history }) => {
     dispatch(listProductDetails(id));
   }, [dispatch, id]);
   const addToCartHandler = () => {
-    navigate(`/cart/${id}?qty=${qty}`);
+    dispatch(addToCart(product._id, qty));
+    navigate("/cart");
   };
-
   // const product = products.find((p) => p._id === `${id}`);
   // console.log(product);
 

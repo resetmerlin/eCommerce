@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 const userSchema = mongoose.Schema(
   {
     // Now, in this object is where we want to define all the fields that we want for a user.
@@ -29,6 +30,9 @@ const userSchema = mongoose.Schema(
   }
 );
 
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 const User = mongoose.model("User", userSchema);
 // Mongoose.model because we want to create a model from this schema.
 

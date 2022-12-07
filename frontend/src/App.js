@@ -18,7 +18,7 @@ const App = () => {
             {/*  for the route, we just want to put in exact it has to match this exact. */}
             {/* react outer dom version 6이상부터는 route를 routes안에 넣어야 함 */}
             <Route path="/product/:id" element={<ProductScreen />} />
-            <Route path="/cart">
+            <Route path="/cart" element={<CartScreen />}>
               <Route path=":id" element={<CartScreen />} />
               <Route path="" element={<CartScreen />} />
             </Route>
