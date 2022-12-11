@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
@@ -8,12 +8,14 @@ import CheckoutSteps from "../components/CheckoutSteps";
 const ShippingScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
   const [country, setCountry] = useState(shippingAddress.country);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
@@ -30,7 +32,7 @@ const ShippingScreen = () => {
           <Form.Control
             type="text"
             placeholder="Enter address"
-            value={address}
+            value={address || ""}
             required
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
@@ -42,7 +44,7 @@ const ShippingScreen = () => {
           <Form.Control
             type="text"
             placeholder="Enter city"
-            value={city}
+            value={city || ""}
             required
             onChange={(e) => setCity(e.target.value)}
           ></Form.Control>
@@ -54,7 +56,7 @@ const ShippingScreen = () => {
           <Form.Control
             type="text"
             placeholder="Enter postal Code"
-            value={postalCode}
+            value={postalCode || ""}
             required
             onChange={(e) => setPostalCode(e.target.value)}
           ></Form.Control>
@@ -66,7 +68,7 @@ const ShippingScreen = () => {
           <Form.Control
             type="text"
             placeholder="Enter Country"
-            value={country}
+            value={country || ""}
             required
             onChange={(e) => setCountry(e.target.value)}
           ></Form.Control>

@@ -41,6 +41,7 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  cart: cartReducer,
 });
 
 const middleware = [thunk];
