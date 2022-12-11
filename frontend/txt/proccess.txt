@@ -1,0 +1,4 @@
+constant => reducers => action => ProfileScreen => 
+
+
+screen => action =<> constants=> cart reducer => store.js =>

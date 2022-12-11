@@ -4,12 +4,30 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { productListReducer } from "./reducers/productReducers";
 import { productDetailsReducer } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
-
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userDetailsReducer,
+  userUpdateProfileReducer,
+} from "./reducers/userReducers";
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 // And we want to fetch it from a local storage.
 // if i use parse ,it gets stored as a string.
+
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
+const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
+  ? JSON.parse(localStorage.getItem("shippingAddress"))
+  : {};
+
+//   So we're just checking to see if user info is in storage.
+
+// If it is, we'll set it to this variable.
+
+// If not, we'll set it to null and then we want to add it down here to our initial state.
 const reducer = combineReducers({
   productList: productListReducer,
   // Now, this is really important because this is this is what's going to show in as you as this piece
@@ -19,11 +37,21 @@ const reducer = combineReducers({
   // So it'll be the product list part of the state.
   productDetails: productDetailsReducer,
   cart: cartReducer,
+  userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
+  userDetails: userDetailsReducer,
+  userUpdateProfile: userUpdateProfileReducer,
 });
 
 const middleware = [thunk];
 const initialState = {
-  cart: { cartItems: cartItemsFromStorage },
+  cart: {
+    cartItems: cartItemsFromStorage,
+    shippingAddress: shippingAddressFromStorage,
+  },
+  userLogin: { userInfo: userInfoFromStorage },
+
+  // OK, so that that data will get it'll always come from local storage if it's in there.
 };
 const store = createStore(
   reducer,

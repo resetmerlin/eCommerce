@@ -30,6 +30,8 @@ const ProductScreen = ({ history, match }) => {
 
   const { loading, error, product } = productDetails;
 
+  // const userLogin = useSelector((state) => state.userLogin);
+  // const { userInfo } = userLogin;
   useEffect(() => {
     // const fetchProduct = async () => {
     //   const { data } = await axios.get(`/api/products/${id}`);

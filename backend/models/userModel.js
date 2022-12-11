@@ -33,6 +33,26 @@ const userSchema = mongoose.Schema(
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+userSchema.pre("save", async function (next) {
+  //   Now, one thing that's really important that we want to add here is we only want to do this if the password
+
+  // field is sent or if it's modified.
+
+  // When we have the update profile functionality and we change, we update, let's say, our name or our
+
+  // email, but not the password.
+  if (!this.isModified("password")) {
+    next();
+    //And if it has been modified, then this will run the below line and it will hatch the password.
+  }
+  const salt = await bcrypt.genSalt(10);
+  //So there's a method on bcrypt called gen Salt,
+  // which will generate a salt and it takes in a number rounds, and will use 10
+  this.password = await bcrypt.hash(this.password, salt);
+  //   so initially this.password is the plain text password, but now we're resetting it to be the Hash
+
+  // password.
+});
 const User = mongoose.model("User", userSchema);
 // Mongoose.model because we want to create a model from this schema.
 
