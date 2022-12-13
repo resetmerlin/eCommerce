@@ -1,15 +1,21 @@
-import React, { useState } from "react";
-import { Link, matchPath } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-
+import { createOrder } from "../actions/orderActions";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 const PlaceOrderScreen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const cart = useSelector((state) => state.cart);
-  const { shippingAddress } = cart;
+  console.log(cart);
 
   // Calculate prices
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
   cart.itemsPrice = cart.cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
@@ -17,18 +23,37 @@ const PlaceOrderScreen = () => {
 
   cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 100;
   cart.taxPrice = Number((0.15 * cart.itemsPrice).toFixed(2));
-  const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2);
-  };
+
   cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
+
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+  // This success here, if this is true, that means that everything went through and we're ready to be
+
+  // redirected, so we need to bring in useeffect.
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`);
+    }
+    //eslint-disable-next-line
+  }, [navigate, success]);
   const placeOrderHandler = () => {
-    console.log("order");
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
   };
   cart.totalPrice =
     Number(cart.itemsPrice) +
     Number(cart.taxPrice).toFixed(2) +
     Number(cart.shippingPrice);
-  console.log(cart);
 
   return (
     <>
@@ -112,6 +137,9 @@ const PlaceOrderScreen = () => {
                   <Col>Total</Col>
                   <Col>${cart.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Message variant={"danger"}>{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button

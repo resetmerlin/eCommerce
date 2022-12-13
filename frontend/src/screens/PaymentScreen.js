@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
@@ -14,6 +14,7 @@ const PaymentgScreen = () => {
   if (!shippingAddress) {
     navigate("/shipping");
   }
+
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
   //default payment method
 
