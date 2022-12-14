@@ -10,7 +10,26 @@ import {
   userDetailsReducer,
   userUpdateProfileReducer,
 } from "./reducers/userReducers";
-import { orderCreateReducers } from "./reducers/orderReducers";
+import {
+  orderCreateReducers,
+  orderDetailSReducers,
+} from "./reducers/orderReducers";
+const reducer = combineReducers({
+  productList: productListReducer,
+  // Now, this is really important because this is this is what's going to show in as you as this piece
+
+  // of state.
+
+  // So it'll be the product list part of the state.
+  productDetails: productDetailsReducer,
+  cart: cartReducer,
+  userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
+  userDetails: userDetailsReducer,
+  userUpdateProfile: userUpdateProfileReducer,
+  orderCreate: orderCreateReducers,
+  orderDetails: orderDetailSReducers,
+});
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
@@ -29,21 +48,6 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
 // If it is, we'll set it to this variable.
 
 // If not, we'll set it to null and then we want to add it down here to our initial state.
-const reducer = combineReducers({
-  productList: productListReducer,
-  // Now, this is really important because this is this is what's going to show in as you as this piece
-
-  // of state.
-
-  // So it'll be the product list part of the state.
-  productDetails: productDetailsReducer,
-  cart: cartReducer,
-  userLogin: userLoginReducer,
-  userRegister: userRegisterReducer,
-  userDetails: userDetailsReducer,
-  userUpdateProfile: userUpdateProfileReducer,
-  orderCreate: orderCreateReducers,
-});
 
 const middleware = [thunk];
 const initialState = {

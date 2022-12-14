@@ -39,4 +39,33 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems };
+// @desc Get order by ID
+// @route GET/api/orders/:id
+// @access Private
+const getOrderById = asyncHandler(async (req, res) => {
+  //fetch the orders
+  const order = await Order.findById(req.params.id).populate(
+    //     Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s).
+
+    // in this example we replace user with the user document in the user collection. also we only fetch name and email field from user document:
+
+    // populate('user', 'name email')
+    "user",
+    "name email"
+  );
+  //   Now, in addition to the order information, I also want to get the user's name and email that's associated
+
+  // with this order.
+
+  if (order && order.user._id.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error("Unauthorized Action");
+  } else if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error("No order found");
+  }
+});
+
+export { addOrderItems, getOrderById };
