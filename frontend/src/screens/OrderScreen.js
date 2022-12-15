@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,9 +21,19 @@ const OrderScreen = () => {
       order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
   }
+
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     navigate("/login");
+  //   }
+  // });
+
   useEffect(() => {
-    dispatch(getOrderDetails(orderId));
-  });
+    if (!order || order._id !== orderId) {
+      dispatch(getOrderDetails(orderId));
+    }
+  }, [order, orderId, dispatch]);
+  console.log(orderDetails.order.shippingAddress.address);
 
   return loading ? (
     <Loader />
@@ -39,8 +49,10 @@ const OrderScreen = () => {
               <h2>Shipping</h2>
               <p>
                 <strong>Address:</strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city},
-                {order.shippingAddress.postalCode},
+                {orderDetails.order.shippingAddress.address},{" "}
+                {orderDetails.order.shippingAddress.city}{" "}
+                {orderDetails.order.shippingAddress.postalCode},{" "}
+                {orderDetails.order.shippingAddress.country}
               </p>
             </ListGroup.Item>
             <ListGroup.Item>
